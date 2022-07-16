@@ -47,6 +47,26 @@ namespace CreditCard.Api.Controllers
             return CreatedAtAction(nameof(GetCard), card.Id, card);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditCard([FromRoute]Guid id, Card card)
+        {
+            var existingCard = await _cardsDbContext.Cards.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingCard != null)
+            {
+                existingCard.CardNumber = card.CardNumber;
+                existingCard.CardHolderName = card.CardHolderName;
+                existingCard.CVC = card.CVC;
+                existingCard.ExpiryMonth = card.ExpiryMonth;
+                existingCard.ExpiryYear = card.ExpiryYear;
+                await _cardsDbContext.SaveChangesAsync();
+
+                return Ok(existingCard);
+
+            }
+
+            return NotFound("Card Not Found");
+        }
 
     }
        
