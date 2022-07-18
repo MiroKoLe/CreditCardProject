@@ -72,7 +72,7 @@ namespace CreditCard.Api.Controllers
         {
             var existingCard = await _cardsDbContext.Cards.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(id == existingCard.Id)
+            if(existingCard != null)
             {
                 _cardsDbContext.Cards.Remove(existingCard);
                 await _cardsDbContext.SaveChangesAsync();
