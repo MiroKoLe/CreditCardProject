@@ -68,6 +68,19 @@ namespace CreditCard.Api.Controllers
             return NotFound("Card Not Found");
         }
 
-    }
-       
+        public async Task<IActionResult> DeleteCard([FromRoute]Guid id)
+        {
+            var existingCard = await _cardsDbContext.Cards.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(id == existingCard.Id)
+            {
+                _cardsDbContext.Cards.Remove(existingCard);
+                await _cardsDbContext.SaveChangesAsync();
+                return Ok(existingCard);
+            }
+
+            return NotFound("Card Not Found");
+
+        }
+    }      
 }
